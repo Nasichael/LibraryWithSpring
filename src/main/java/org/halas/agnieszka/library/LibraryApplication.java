@@ -15,36 +15,52 @@ import java.util.List;
 @SpringBootApplication
 public class LibraryApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LibraryApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LibraryApplication.class, args);
+    }
 
-	@Bean
-	ApplicationRunner run(BookRepository bookRepository, BookingInventory bookingInventory)
-	{
-		return new ApplicationRunner() {
-			@Override
-			public void run(ApplicationArguments args) throws Exception {
-				bookingInventory.getBookings();
-				testmethod(bookRepository);
-			}
-		};
-	}
+    @Bean
+    ApplicationRunner run(BookRepository bookRepository, BookingInventory bookingInventory) {
+        return new ApplicationRunner() {
+            @Override
+            public void run(ApplicationArguments args) throws Exception {
+                bookingInventory.getBookings();
+                testmethod(bookRepository);
+            }
+        };
+    }
 
-	private void testmethod(BookRepository bookRepository) {
-		//save book
-		final Book newBook = new Book("a", (short) 333, CategoryBook.SCIENCEFICTION, "aaa", 4);
-		bookRepository.save(newBook);
-		//bookRepository.
+    public void testmethod(BookRepository bookRepository) {
+        //save book
+        final Book newBook = new Book("a", (short) 333, CategoryBook.SCIENCEFICTION, "aaa", 4);
+        bookRepository.save(newBook);
+        System.out.println(newBook);
+    }
 
-		// get all books
-		final List<Book> all = bookRepository.findAll();
-		System.out.println(all.size());
-	}
+    // get all books
+    public List<Book> findAllBooks(BookRepository bookRepository) {
+        final List<Book> all = bookRepository.findAll();
+        return all;
+    }
 
-	@Bean
-	ApplicationRunner writeSomething( )
-	{
-		return args -> System.out.println("something");
-	}
+    public boolean checkIfBookIdExist(BookRepository bookRepository, int bookId) {
+        final boolean check = bookRepository.existsById(bookId);
+        return check;
+    }
+
+    public long countBooks(BookRepository bookRepository) {
+        final long count = bookRepository.count();
+        return count;
+    }
+
+    public Book getBook(BookRepository bookRepository, int bookId){
+        final Book book = bookRepository.getOne(bookId);
+        return book;
+    }
+
+
+    @Bean
+    ApplicationRunner writeSomething() {
+        return args -> System.out.println("something");
+    }
 }

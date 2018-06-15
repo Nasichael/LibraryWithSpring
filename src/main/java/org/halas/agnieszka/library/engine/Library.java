@@ -73,6 +73,16 @@ public class Library {
 
         final Optional <User> user = userInventory.getById(userId);
         final Optional<Book> book = inMemoryBookInventory.getById(bookId);
+
+        if (!book.isPresent()) {
+            throw new IllegalArgumentException("book with the id: " + bookId + " is unavailable");
+        }
+
+        if (!user.isPresent()) {
+            throw new IllegalArgumentException("user with the id: " + userId + " is not valid");
+        }
+
+
         Booking booking = new Booking(Booking.getNextId(), user.get(), book.get(), LocalDate.now());
         bookingInventory.addBooking(booking);
         return booking;

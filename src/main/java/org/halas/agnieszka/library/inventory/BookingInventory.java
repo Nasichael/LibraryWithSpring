@@ -5,6 +5,7 @@ import org.halas.agnieszka.library.data.Booking;
 import org.halas.agnieszka.library.data.User;
 import org.springframework.stereotype.Repository;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +15,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Repository
-public class BookingInventory {
+public class BookingInventory implements Serializable {
 
     private List<Booking> bookings = new ArrayList<>();
 
@@ -30,9 +31,9 @@ public class BookingInventory {
         bookings.remove(booking);
     }
 
-    public LocalDate calculateReturnDate(LocalDate date) {
+    public LocalDate calculateReturnDate(LocalDate returnDate) {
 
-        LocalDate oneMonthLaterDate = date.plusMonths(1);
+        LocalDate oneMonthLaterDate = returnDate.plusMonths(1);
         return oneMonthLaterDate;
     }
 

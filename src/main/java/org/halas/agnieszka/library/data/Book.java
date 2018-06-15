@@ -1,6 +1,5 @@
 package org.halas.agnieszka.library.data;
 
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 

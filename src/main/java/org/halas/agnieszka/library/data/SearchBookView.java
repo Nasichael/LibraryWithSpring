@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class SearchBookView {
 
-    private LocalDate date;
+    private LocalDate returnDate;
     private String author;
     private short year;
     private CategoryBook categoryBook;
@@ -12,10 +12,10 @@ public class SearchBookView {
     private int id;
     private BookStatus bookStatus;
 
-    public SearchBookView(int id, String author, CategoryBook categoryBook, String title, short year, BookStatus bookStatus, LocalDate date) {
+    public SearchBookView(int id, String author, CategoryBook categoryBook, String title, short year, BookStatus bookStatus, LocalDate returnDate) {
 
         this.id = id;
-        this.date = date;
+        this.returnDate = returnDate;
         this.author = author;
         this.year = year;
         this.categoryBook = categoryBook;
@@ -32,6 +32,34 @@ public class SearchBookView {
         this.bookStatus = bookStatus;
     }
 
+    public LocalDate getDate() {
+        return returnDate;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public short getYear() {
+        return year;
+    }
+
+    public CategoryBook getCategoryBook() {
+        return categoryBook;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public BookStatus getBookStatus() {
+        return bookStatus;
+    }
+
     @Override
     public String toString() {
         return
@@ -41,7 +69,7 @@ public class SearchBookView {
                         ", year=" + year +
                         ", id=" + id +
                         ", Status=" + bookStatus +
-                        ", Return Date=" + date + "]";
+                        ", Return Date=" + returnDate + "]";
 
     }
 }

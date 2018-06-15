@@ -6,10 +6,7 @@ import org.halas.agnieszka.library.data.SearchBookView;
 import org.halas.agnieszka.library.data.User;
 import org.halas.agnieszka.library.engine.Filters;
 import org.halas.agnieszka.library.engine.Library;
-import org.halas.agnieszka.library.inventory.BookInventory;
-import org.halas.agnieszka.library.inventory.InMemoryBookInventory;
-import org.halas.agnieszka.library.inventory.BookingInventory;
-import org.halas.agnieszka.library.inventory.UserInventory;
+import org.halas.agnieszka.library.inventory.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,14 +22,19 @@ public class LibraryController {
     UserInventory userInventory;
     BookingInventory bookingInventory;
     Library library;
+    LibraryApplication libraryApplication;
+    BookRepository bookRepository;
 
 
-    public LibraryController(BookInventory bookInventory, UserInventory userInventory, Library library, BookingInventory bookingInventory) {
+    public LibraryController(BookInventory bookInventory, UserInventory userInventory, Library library,
+                             BookingInventory bookingInventory, LibraryApplication libraryApplication,
+                             BookRepository bookRepository) {
         this.bookInventory = bookInventory;
         this.userInventory = userInventory;
         this.library = library;
         this.bookingInventory = bookingInventory;
-
+        this.libraryApplication = libraryApplication;
+        this.bookRepository = bookRepository;
     }
 
 
@@ -89,4 +91,36 @@ public class LibraryController {
         final List<SearchBookView> view1 = library.searchBookView(Filters.ID(bookId));
         return view1;
     }
+
+    @GetMapping("search/author/{author}")
+    public List<SearchBookView> searchBookViews2(@PathVariable("author") String author) {
+        final List<SearchBookView> view2 = library.searchBookView(Filters.author(author));
+        return view2;
+    }
+
+    /////////////////////////////////////////////////////////////
+    @GetMapping("db/books")
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
+    }
+
+    @GetMapping("db/books/{bookId}")
+    public boolean checkIfBookExist(@PathVariable("bookId") int bookId) {
+        return libraryApplication.checkIfBookIdExist(bookRepository, bookId);
+    }
+
+    @GetMapping("db/count")
+    public long countBook() {
+        return libraryApplication.countBooks(bookRepository);
+    }
+
+    @GetMapping("books/get/{bookId}")
+    public Book book(@PathVariable("bookId") int bookId) {
+        return libraryApplication.getBook(bookRepository, bookId);
+    }
+
+
 }
+
+
+

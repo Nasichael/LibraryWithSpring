@@ -1,12 +1,16 @@
 package org.halas.agnieszka.library.data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+import static javax.persistence.GenerationType.SEQUENCE;
+
+//@Table(name = "shop_book")
 @Entity
 public class Book {
 
     @Id
+    @GeneratedValue(strategy = SEQUENCE)
+    //@Column(name="BOOK_ID")
     private int id;
     private String author;
     private short year;

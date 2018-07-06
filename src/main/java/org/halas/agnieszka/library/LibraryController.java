@@ -7,9 +7,8 @@ import org.halas.agnieszka.library.data.User;
 import org.halas.agnieszka.library.engine.Filters;
 import org.halas.agnieszka.library.engine.Library;
 import org.halas.agnieszka.library.inventory.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.halas.agnieszka.library.inventory.db.BookRepository;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -65,7 +64,6 @@ public class LibraryController {
         return userInventory.getAll();
     }
 
-
     ///////////////////////////////////////////////////////////
 
     @GetMapping("checkBookAboveLimit/{userId}")
@@ -80,8 +78,8 @@ public class LibraryController {
         return userBooking;
     }
 
-    @GetMapping("search/title/{word}")
-    public List<SearchBookView> serachViews(@PathVariable("word") String word) {
+    @GetMapping("search/title")
+    public List<SearchBookView> serachViews(@RequestParam("word") String word) {
         final List<SearchBookView> searchView = library.searchBookView(Filters.title(word));
         return searchView;
     }
@@ -104,22 +102,25 @@ public class LibraryController {
         return bookRepository.findAll();
     }
 
-    @GetMapping("db/books/{bookId}")
+    @GetMapping("db/books/exists/{bookId}")
     public boolean checkIfBookExist(@PathVariable("bookId") int bookId) {
-        return libraryApplication.checkIfBookIdExist(bookRepository, bookId);
+        return libraryApplication.checkIfBookIdExist(bookId);
     }
 
-    @GetMapping("db/count")
+    @GetMapping("db/books/count")
     public long countBook() {
-        return libraryApplication.countBooks(bookRepository);
+        return libraryApplication.countBooks();
     }
 
-    @GetMapping("books/get/{bookId}")
+    @GetMapping("db/books/{bookId}")
     public Book book(@PathVariable("bookId") int bookId) {
-        return libraryApplication.getBook(bookRepository, bookId);
+        return libraryApplication.getBook(bookId);
     }
 
-
+    @PostMapping("db/books/")
+    public void saveBook(@RequestBody Book book) {
+        libraryApplication.saveBook(book);
+    }
 }
 
 

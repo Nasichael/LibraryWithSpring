@@ -1,4 +1,4 @@
-package org.halas.agnieszka.library.inventory;
+package org.halas.agnieszka.library.inventory.db;
 
 import org.halas.agnieszka.library.data.Book;
 import org.springframework.data.jpa.repository.JpaRepository;

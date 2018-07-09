@@ -3,10 +3,7 @@ package org.halas.agnieszka.library;
 import org.halas.agnieszka.library.data.*;
 import org.halas.agnieszka.library.engine.Filters;
 import org.halas.agnieszka.library.engine.Library;
-import org.halas.agnieszka.library.inventory.BookInventory;
-import org.halas.agnieszka.library.inventory.BookingInventory;
-import org.halas.agnieszka.library.inventory.InMemoryBookInventory;
-import org.halas.agnieszka.library.inventory.UserInventory;
+import org.halas.agnieszka.library.inventory.*;
 import org.junit.Test;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -19,9 +16,9 @@ public class LibraryTest {
 
     InMemoryBookInventory inMemoryBookInventory = new InMemoryBookInventory();
     BookingInventory bookingInventory = new BookingInventory();
-    UserInventory userInventory = new UserInventory();
+    InMemoryUserInventory inMemoryUserInventory = new InMemoryUserInventory();
 
-    Library library = new Library(inMemoryBookInventory, bookingInventory, userInventory);
+    Library library = new Library(inMemoryBookInventory, bookingInventory, inMemoryUserInventory);
 
     @Test
     public void shouldSearchForExistingTitle() {
@@ -98,7 +95,7 @@ public class LibraryTest {
 
         //given
         Optional<Book> book = inMemoryBookInventory.getById(5);
-        Optional<User> user = userInventory.getById(3);
+        Optional<User> user = inMemoryUserInventory.getById(3);
 
         //when
         final Booking rent = library.rent(book.get().getId(), user.get().getId());
@@ -114,7 +111,7 @@ public class LibraryTest {
         //given
         Optional<Book> book = inMemoryBookInventory.getById(8);
         Optional<Book> book2 = inMemoryBookInventory.getById(7);
-        Optional<User> user = userInventory.getById(1);
+        Optional<User> user = inMemoryUserInventory.getById(1);
 
         //when
         final Booking rent = library.rent(book2.get().getId(), user.get().getId());
@@ -137,8 +134,8 @@ public class LibraryTest {
         Optional<Book> book = inMemoryBookInventory.getById(3);
         Optional<Book> book2 = inMemoryBookInventory.getById(6);
         Optional<Book> book3 = inMemoryBookInventory.getById(5);
-        Optional<User> user = userInventory.getById(7);
-        Optional<User> user2 = userInventory.getById(2);
+        Optional<User> user = inMemoryUserInventory.getById(7);
+        Optional<User> user2 = inMemoryUserInventory.getById(2);
         Booking booking1 = library.rent(book.get().getId(), user.get().getId());
         Booking booking2 = library.rent(book2.get().getId(), user.get().getId());
         Booking booking3 = library.rent(book3.get().getId(), user2.get().getId());
@@ -156,7 +153,7 @@ public class LibraryTest {
     @Test
     public void shouldCheckIfBookNumberReachedLimit() {
         //given
-        Optional<User> user = userInventory.getById(7);
+        Optional<User> user = inMemoryUserInventory.getById(7);
         Optional<Book> book = inMemoryBookInventory.getById(3);
         Optional<Book> book2 = inMemoryBookInventory.getById(6);
         library.rent(book.get().getId(), user.get().getId());
@@ -172,7 +169,7 @@ public class LibraryTest {
     @Test
     public void shouldCheckIfBookNumberNotReachedLimit() {
         //given
-        Optional<User> user = userInventory.getById(7);
+        Optional<User> user = inMemoryUserInventory.getById(7);
         Optional<Book> book = inMemoryBookInventory.getById(3);
         Optional<Book> book2 = inMemoryBookInventory.getById(6);
         Optional<Book> book3 = inMemoryBookInventory.getById(1);
@@ -190,7 +187,7 @@ public class LibraryTest {
     @Test
     public void shouldCheckIfBookRented() {
         //given
-        Optional<User> user = userInventory.getById(7);
+        Optional<User> user = inMemoryUserInventory.getById(7);
         Optional<Book> book = inMemoryBookInventory.getById(3);
         library.rent(book.get().getId(), user.get().getId());
 
@@ -217,7 +214,7 @@ public class LibraryTest {
     public void shouldCreateSearchBookView() {
         //given
         Optional<Book> book = inMemoryBookInventory.getById(13);
-        Optional<User> user = userInventory.getById(4);
+        Optional<User> user = inMemoryUserInventory.getById(4);
 
         //when
         library.rent(book.get().getId(), user.get().getId());
@@ -232,7 +229,7 @@ public class LibraryTest {
 
         //given
         Optional<Book> book = inMemoryBookInventory.getById(12);
-        Optional<User> user = userInventory.getById(6);
+        Optional<User> user = inMemoryUserInventory.getById(6);
         library.rent(book.get().getId(), user.get().getId());
         Optional<Booking> booking = bookingInventory.getById(0);
 
@@ -247,7 +244,7 @@ public class LibraryTest {
     public void shouldNotFindBook() {
 
         //given
-        Optional<User> user = userInventory.getById(2);
+        Optional<User> user = inMemoryUserInventory.getById(2);
         final int bookId = 23;
 
         try {

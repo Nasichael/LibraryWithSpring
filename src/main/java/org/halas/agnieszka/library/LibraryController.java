@@ -8,6 +8,8 @@ import org.halas.agnieszka.library.engine.Filters;
 import org.halas.agnieszka.library.engine.Library;
 import org.halas.agnieszka.library.inventory.*;
 import org.halas.agnieszka.library.inventory.db.BookRepository;
+import org.halas.agnieszka.library.inventory.db.UserRepository;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -22,18 +24,21 @@ public class LibraryController {
     BookingInventory bookingInventory;
     Library library;
     LibraryApplication libraryApplication;
+
     BookRepository bookRepository;
+    UserRepository userRepository;
 
 
     public LibraryController(BookInventory bookInventory, UserInventory userInventory, Library library,
                              BookingInventory bookingInventory, LibraryApplication libraryApplication,
-                             BookRepository bookRepository) {
+                             BookRepository bookRepository, UserRepository userRepository) {
         this.bookInventory = bookInventory;
         this.userInventory = userInventory;
-        this.library = library;
         this.bookingInventory = bookingInventory;
-        this.libraryApplication = libraryApplication;
         this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
+        this.library = library;
+        this.libraryApplication = libraryApplication;
     }
 
 

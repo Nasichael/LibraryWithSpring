@@ -1,10 +1,20 @@
 package org.halas.agnieszka.library.data;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import static javax.persistence.GenerationType.SEQUENCE;
+
+@Entity
 public class User {
 
-   private int id ;
-   private String name;
-   private String firstName;
+    @Id
+    @GeneratedValue(strategy = SEQUENCE)
+
+    private int id;
+    private String name;
+    private String firstName;
 
     public User(int id, String name, String firstName) {
         this.id = id;

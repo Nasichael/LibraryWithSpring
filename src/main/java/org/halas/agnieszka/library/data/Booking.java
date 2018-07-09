@@ -1,7 +1,9 @@
 package org.halas.agnieszka.library.data;
 
+import javax.persistence.Entity;
 import java.time.LocalDate;
 
+//@Entity
 public class Booking {
 
     private static int counter = 0;

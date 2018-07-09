@@ -5,6 +5,7 @@ import javax.persistence.*;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 //@Table(name = "shop_book")
+
 @Entity
 public class Book {
 

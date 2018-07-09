@@ -4,6 +4,7 @@ import org.halas.agnieszka.library.data.Book;
 import org.halas.agnieszka.library.data.CategoryBook;
 import org.halas.agnieszka.library.inventory.db.BookRepository;
 import org.halas.agnieszka.library.inventory.BookingInventory;
+import org.halas.agnieszka.library.inventory.db.UserRepository;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,11 +16,12 @@ import java.util.List;
 @SpringBootApplication
 public class LibraryApplication {
 
-
     BookRepository bookRepository;
+    UserRepository userRepository;
 
-    public LibraryApplication(BookRepository bookRepository) {
+    public LibraryApplication(BookRepository bookRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
     }
 
     public static void main(String[] args) {

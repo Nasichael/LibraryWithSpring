@@ -3,6 +3,7 @@ package org.halas.agnieszka.library.engine;
 import org.halas.agnieszka.library.data.*;
 import org.halas.agnieszka.library.inventory.InMemoryBookInventory;
 import org.halas.agnieszka.library.inventory.BookingInventory;
+import org.halas.agnieszka.library.inventory.InMemoryUserInventory;
 import org.halas.agnieszka.library.inventory.UserInventory;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +19,14 @@ import java.util.stream.Collectors;
 public class Library {
     public static final int BOOKING_LIMIT = 3;
 
-
     InMemoryBookInventory inMemoryBookInventory;
     BookingInventory bookingInventory;
-    UserInventory userInventory;
+    InMemoryUserInventory inMemoryUserInventory;
 
-    public Library(InMemoryBookInventory inMemoryBookInventory, BookingInventory bookingInventory1, UserInventory userInventory) {
+    public Library(InMemoryBookInventory inMemoryBookInventory, BookingInventory bookingInventory1, InMemoryUserInventory inMemoryUserInventory) {
         this.inMemoryBookInventory = inMemoryBookInventory;
         this.bookingInventory = bookingInventory1;
-        this.userInventory = userInventory;
+        this.inMemoryUserInventory = inMemoryUserInventory;
     }
 
     public List<Book> search(Predicate<Book>... predicates) {
@@ -71,7 +71,7 @@ public class Library {
 
     public Booking rent(int bookId, int userId) {
 
-        final Optional <User> user = userInventory.getById(userId);
+        final Optional <User> user = inMemoryUserInventory.getById(userId);
         final Optional<Book> book = inMemoryBookInventory.getById(bookId);
 
         if (!book.isPresent()) {

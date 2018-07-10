@@ -4,6 +4,7 @@ import org.halas.agnieszka.library.data.Book;
 import org.halas.agnieszka.library.data.CategoryBook;
 import org.halas.agnieszka.library.inventory.db.BookRepository;
 import org.halas.agnieszka.library.inventory.BookingInventory;
+import org.halas.agnieszka.library.inventory.db.BookingRepository;
 import org.halas.agnieszka.library.inventory.db.UserRepository;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,11 +18,13 @@ import java.util.List;
 public class LibraryApplication {
 
     BookRepository bookRepository;
+    BookingRepository bookingRepository;
     UserRepository userRepository;
 
-    public LibraryApplication(BookRepository bookRepository, UserRepository userRepository) {
+    public LibraryApplication(BookRepository bookRepository, UserRepository userRepository, BookingRepository bookingRepository) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
+        this.bookingRepository = bookingRepository;
     }
 
     public static void main(String[] args) {
@@ -74,6 +77,14 @@ public class LibraryApplication {
 
     public void saveBook(Book book) {
         bookRepository.save(book);
+    }
+
+    public void deleteBook(int bookId) {
+        bookRepository.deleteById(bookId);
+    }
+
+    public void deleteAllBooks() {
+        bookRepository.deleteAll();
     }
 
 /*    @Bean

@@ -2,56 +2,25 @@ package org.halas.agnieszka.library.inventory;
 
 import org.halas.agnieszka.library.data.Book;
 import org.halas.agnieszka.library.data.Booking;
-import org.halas.agnieszka.library.data.User;
-import org.springframework.stereotype.Repository;
 
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
-@Repository
-public class BookingInventory implements Serializable {
+public interface BookingInventory {
 
-    private List<Booking> bookings = new ArrayList<>();
+    List<Booking> getBookings();
 
-    public List<Booking> getBookings() {
-        return bookings;
-    }
+    void addBooking(Booking booking);
 
-    public void addBooking(Booking booking) {
-        bookings.add(booking);
-    }
+    void removeBook(Booking booking);
 
-    public void removeBook(Booking booking) {
-        bookings.remove(booking);
-    }
+    LocalDate calculateReturnDate(LocalDate returnDate);
 
-    public LocalDate calculateReturnDate(LocalDate returnDate) {
+    Optional<Booking> getById(int bookingId);
 
-        LocalDate oneMonthLaterDate = returnDate.plusMonths(1);
-        return oneMonthLaterDate;
-    }
+    Collection<Booking> findBookingForUser(int userId);
 
-    public Optional<Booking> getById(int bookingId) {
-        return Optional.ofNullable(bookings.get(bookingId));
-    }
-
-    public Collection<Booking> findBookingForUser(int userId) {
-
-        Predicate<Booking> predicate = b -> b.getUser().getId() == userId;
-        Collection<Booking> userCollection = bookings.stream().filter(predicate).collect(Collectors.toList());
-        return userCollection;
-    }
-
-    public Optional<Booking> findBookingForBook(Book book) {
-
-        Predicate<Booking> predicate = b -> b.getBook().equals(book);
-        Optional<Booking> optional = bookings.stream().filter(predicate).findAny();
-        return optional;
-    }
+    Optional<Booking> findBookingForBook(Book book);
 }

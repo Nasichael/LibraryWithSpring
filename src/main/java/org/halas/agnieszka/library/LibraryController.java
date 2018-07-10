@@ -8,6 +8,7 @@ import org.halas.agnieszka.library.engine.Filters;
 import org.halas.agnieszka.library.engine.Library;
 import org.halas.agnieszka.library.inventory.*;
 import org.halas.agnieszka.library.inventory.db.BookRepository;
+import org.halas.agnieszka.library.inventory.db.BookingRepository;
 import org.halas.agnieszka.library.inventory.db.UserRepository;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,14 @@ public class LibraryController {
     LibraryApplication libraryApplication;
 
     BookRepository bookRepository;
+    BookingRepository bookingRepository;
     UserRepository userRepository;
 
 
     public LibraryController(BookInventory bookInventory, UserInventory userInventory, Library library,
                              BookingInventory bookingInventory, LibraryApplication libraryApplication,
-                             BookRepository bookRepository, UserRepository userRepository) {
+                             BookRepository bookRepository, UserRepository userRepository,
+                             BookingRepository bookingRepository) {
         this.bookInventory = bookInventory;
         this.userInventory = userInventory;
         this.bookingInventory = bookingInventory;
@@ -39,6 +42,7 @@ public class LibraryController {
         this.userRepository = userRepository;
         this.library = library;
         this.libraryApplication = libraryApplication;
+        this.bookingRepository = bookingRepository;
     }
 
 
@@ -125,6 +129,16 @@ public class LibraryController {
     @PostMapping("db/books/")
     public void saveBook(@RequestBody Book book) {
         libraryApplication.saveBook(book);
+    }
+
+    @DeleteMapping("books/{bookId}")
+    public void deleteBook(@PathVariable("bookId") int bookId) {
+        libraryApplication.deleteBook(bookId);
+    }
+
+    @DeleteMapping("books")
+    public void deleteAllBooks(){
+        libraryApplication.deleteAllBooks();
     }
 }
 

@@ -1,10 +1,7 @@
 package org.halas.agnieszka.library.engine;
 
 import org.halas.agnieszka.library.data.*;
-import org.halas.agnieszka.library.inventory.InMemoryBookInventory;
-import org.halas.agnieszka.library.inventory.BookingInventory;
-import org.halas.agnieszka.library.inventory.InMemoryUserInventory;
-import org.halas.agnieszka.library.inventory.UserInventory;
+import org.halas.agnieszka.library.inventory.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,12 +17,12 @@ public class Library {
     public static final int BOOKING_LIMIT = 3;
 
     InMemoryBookInventory inMemoryBookInventory;
-    BookingInventory bookingInventory;
+    InMemoryBookingInventory inMemoryBookingInventory;
     InMemoryUserInventory inMemoryUserInventory;
 
-    public Library(InMemoryBookInventory inMemoryBookInventory, BookingInventory bookingInventory1, InMemoryUserInventory inMemoryUserInventory) {
+    public Library(InMemoryBookInventory inMemoryBookInventory, InMemoryBookingInventory inMemoryBookingInventory, InMemoryUserInventory inMemoryUserInventory) {
         this.inMemoryBookInventory = inMemoryBookInventory;
-        this.bookingInventory = bookingInventory1;
+        this.inMemoryBookingInventory = inMemoryBookingInventory;
         this.inMemoryUserInventory = inMemoryUserInventory;
     }
 
@@ -49,11 +46,11 @@ public class Library {
 
         List<SearchBookView> filteredView =
                 filteredBooks.stream().map(book -> {
-                    Optional<Booking> booking = bookingInventory.findBookingForBook(book);
+                    Optional<Booking> booking = inMemoryBookingInventory.findBookingForBook(book);
 
                     if (booking.isPresent()) {
                         return new SearchBookView(book.getId(), book.getAuthor(), book.getCategoryBook(),
-                                book.getTitle(), book.getYear(), BookStatus.RENTED, bookingInventory.calculateReturnDate(booking.get().getDate()));
+                                book.getTitle(), book.getYear(), BookStatus.RENTED, inMemoryBookingInventory.calculateReturnDate(booking.get().getDate()));
                     } else {
                         return new SearchBookView(book.getId(), book.getAuthor(), book.getCategoryBook(),
                                 book.getTitle(), book.getYear(), BookStatus.AVAILABLE);
@@ -84,20 +81,20 @@ public class Library {
 
 
         Booking booking = new Booking(Booking.getNextId(), user.get(), book.get(), LocalDate.now());
-        bookingInventory.addBooking(booking);
+        inMemoryBookingInventory.addBooking(booking);
         return booking;
     }
 
     public Collection<Booking> getRentedBooksForUser(int userId) {
-        return bookingInventory.findBookingForUser(userId);
+        return inMemoryBookingInventory.findBookingForUser(userId);
     }
 
     public void returnBook(Booking booking) {
-        bookingInventory.removeBook(booking);
+        inMemoryBookingInventory.removeBook(booking);
     }
 
     public boolean checkBookLimit(int userId) {
-        int count = bookingInventory.findBookingForUser(userId).size();
+        int count = inMemoryBookingInventory.findBookingForUser(userId).size();
         if (count >= BOOKING_LIMIT) {
             return true;
         } else {
@@ -106,7 +103,7 @@ public class Library {
     }
 
     public boolean checkIfBookRented(Book book) {
-        Optional<Booking> booking = bookingInventory.findBookingForBook(book);
+        Optional<Booking> booking = inMemoryBookingInventory.findBookingForBook(book);
         return booking.isPresent();
     }
 }

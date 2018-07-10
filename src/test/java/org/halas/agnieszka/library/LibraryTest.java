@@ -15,10 +15,10 @@ import static org.junit.Assert.assertEquals;
 public class LibraryTest {
 
     InMemoryBookInventory inMemoryBookInventory = new InMemoryBookInventory();
-    BookingInventory bookingInventory = new BookingInventory();
+    InMemoryBookingInventory inMemoryBookingInventory = new InMemoryBookingInventory();
     InMemoryUserInventory inMemoryUserInventory = new InMemoryUserInventory();
 
-    Library library = new Library(inMemoryBookInventory, bookingInventory, inMemoryUserInventory);
+    Library library = new Library(inMemoryBookInventory, inMemoryBookingInventory, inMemoryUserInventory);
 
     @Test
     public void shouldSearchForExistingTitle() {
@@ -144,7 +144,7 @@ public class LibraryTest {
         library.returnBook(booking2);
 
         //then
-        assertEquals(2, bookingInventory.getBookings().size());
+        assertEquals(2, inMemoryBookingInventory.getBookings().size());
 
         Collection<Booking> bookings = library.getRentedBooksForUser(user.get().getId());
         assertEquals(1, bookings.size());
@@ -231,10 +231,10 @@ public class LibraryTest {
         Optional<Book> book = inMemoryBookInventory.getById(12);
         Optional<User> user = inMemoryUserInventory.getById(6);
         library.rent(book.get().getId(), user.get().getId());
-        Optional<Booking> booking = bookingInventory.getById(0);
+        Optional<Booking> booking = inMemoryBookingInventory.getById(0);
 
         //when
-        LocalDate returnDate = bookingInventory.calculateReturnDate(booking.get().getDate());
+        LocalDate returnDate = inMemoryBookingInventory.calculateReturnDate(booking.get().getDate());
 
         //then
         assertEquals(LocalDate.now().plusMonths(1), returnDate);

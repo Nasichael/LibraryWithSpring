@@ -16,6 +16,9 @@ public class User {
     private String name;
     private String firstName;
 
+    public User() {
+    }
+
     public User(int id, String name, String firstName) {
         this.id = id;
         this.name = name;

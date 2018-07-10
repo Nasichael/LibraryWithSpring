@@ -9,9 +9,10 @@ import java.util.*;
 @Repository
 public interface UserInventory {
 
-    Collection<User> getAll();
+    Collection<User> findAll();
 
-    Optional<User> getById(int userId);
+    Optional<User> findById(int userId);
+
 
 
 }

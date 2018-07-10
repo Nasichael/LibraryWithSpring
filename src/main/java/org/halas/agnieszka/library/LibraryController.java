@@ -9,7 +9,6 @@ import org.halas.agnieszka.library.engine.Library;
 import org.halas.agnieszka.library.inventory.*;
 import org.halas.agnieszka.library.inventory.db.BookRepository;
 import org.halas.agnieszka.library.inventory.db.UserRepository;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -66,7 +65,7 @@ public class LibraryController {
 
     @GetMapping("users")
     public Collection<User> getUsers() {
-        return userInventory.getAll();
+        return userInventory.findAll ();
     }
 
     ///////////////////////////////////////////////////////////
@@ -125,6 +124,12 @@ public class LibraryController {
     @PostMapping("db/books/")
     public void saveBook(@RequestBody Book book) {
         libraryApplication.saveBook(book);
+    }
+
+    @GetMapping("db/books/rent/{bookId}/user/{userId}")
+    public Booking rentBook(@PathVariable("bookId") int bookId, @PathVariable("userId") int userId) {
+        final Booking rent = library.rent(bookId, userId);
+        return rent;
     }
 }
 

@@ -1,16 +1,14 @@
-package org.halas.agnieszka.library.inventory;
+package org.halas.agnieszka.library.inventory.memory;
 
 import org.halas.agnieszka.library.data.Book;
 import org.halas.agnieszka.library.data.CategoryBook;
+import org.halas.agnieszka.library.inventory.BookInventory;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
-public class InMemoryBookInventory implements BookInventory{
+public class InMemoryBookInventory implements BookInventory {
 
     Map<Integer, Book> books = new HashMap<>();
 
@@ -38,6 +36,11 @@ public class InMemoryBookInventory implements BookInventory{
 
     public Optional<Book> getById(int bookId) {
         return Optional.ofNullable(books.get(bookId));
+    }
+
+    @Override
+    public List<Book> findAll() {
+        return null;
     }
 
 }

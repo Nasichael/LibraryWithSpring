@@ -3,6 +3,7 @@ package org.halas.agnieszka.library.inventory;
 import org.halas.agnieszka.library.data.Book;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface BookInventory {
@@ -11,4 +12,6 @@ public interface BookInventory {
 
     Optional<Book> getById(int bookId);
 
+
+    List<Book> findAll();
 }

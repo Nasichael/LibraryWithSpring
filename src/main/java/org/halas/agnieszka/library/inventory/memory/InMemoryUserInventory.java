@@ -1,7 +1,8 @@
-package org.halas.agnieszka.library.inventory;
+package org.halas.agnieszka.library.inventory.memory;
 
 import org.halas.agnieszka.library.data.User;
 
+import org.halas.agnieszka.library.inventory.UserInventory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;

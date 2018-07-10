@@ -1,8 +1,9 @@
-package org.halas.agnieszka.library.inventory;
+package org.halas.agnieszka.library.inventory.memory;
 
 import org.halas.agnieszka.library.data.Book;
 import org.halas.agnieszka.library.data.Booking;
 import org.halas.agnieszka.library.data.CategoryBook;
+import org.halas.agnieszka.library.inventory.BookingInventory;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Repository
-public class InMemoryBookingInventory implements BookingInventory{
+public class InMemoryBookingInventory implements BookingInventory {
 
     private List<Booking> bookings = new ArrayList<>();
 

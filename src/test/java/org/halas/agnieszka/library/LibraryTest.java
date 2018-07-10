@@ -3,7 +3,12 @@ package org.halas.agnieszka.library;
 import org.halas.agnieszka.library.data.*;
 import org.halas.agnieszka.library.engine.Filters;
 import org.halas.agnieszka.library.engine.Library;
-import org.halas.agnieszka.library.inventory.*;
+import org.halas.agnieszka.library.inventory.BookInventory;
+import org.halas.agnieszka.library.inventory.BookingInventory;
+import org.halas.agnieszka.library.inventory.UserInventory;
+import org.halas.agnieszka.library.inventory.memory.InMemoryBookInventory;
+import org.halas.agnieszka.library.inventory.memory.InMemoryBookingInventory;
+import org.halas.agnieszka.library.inventory.memory.InMemoryUserInventory;
 import org.junit.Test;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -15,10 +20,12 @@ import static org.junit.Assert.assertEquals;
 public class LibraryTest {
 
     InMemoryBookInventory inMemoryBookInventory = new InMemoryBookInventory();
-    InMemoryBookingInventory inMemoryBookingInventory = new InMemoryBookingInventory();
+   InMemoryBookingInventory bookingInventory = new InMemoryBookingInventory();
     InMemoryUserInventory inMemoryUserInventory = new InMemoryUserInventory();
+    InMemoryBookingInventory inMemoryBookingInventory = new InMemoryBookingInventory();
 
-    Library library = new Library(inMemoryBookInventory, inMemoryBookingInventory, inMemoryUserInventory);
+
+    Library library = new Library(inMemoryBookInventory, bookingInventory, inMemoryUserInventory);
 
     @Test
     public void shouldSearchForExistingTitle() {

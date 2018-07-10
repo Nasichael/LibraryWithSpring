@@ -24,25 +24,14 @@ public class LibraryController {
     UserInventory userInventory;
     BookingInventory bookingInventory;
     Library library;
-    LibraryApplication libraryApplication;
-
-    BookRepository bookRepository;
-    BookingRepository bookingRepository;
-    UserRepository userRepository;
 
 
     public LibraryController(BookInventory bookInventory, UserInventory userInventory, Library library,
-                             BookingInventory bookingInventory, LibraryApplication libraryApplication,
-                             BookRepository bookRepository, UserRepository userRepository,
-                             BookingRepository bookingRepository) {
+                             BookingInventory bookingInventory){
         this.bookInventory = bookInventory;
         this.userInventory = userInventory;
         this.bookingInventory = bookingInventory;
-        this.bookRepository = bookRepository;
-        this.userRepository = userRepository;
         this.library = library;
-        this.libraryApplication = libraryApplication;
-        this.bookingRepository = bookingRepository;
     }
 
 
@@ -108,37 +97,37 @@ public class LibraryController {
     /////////////////////////////////////////////////////////////
     @GetMapping("db/books")
     public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+        return bookInventory.findAll();
     }
 
     @GetMapping("db/books/exists/{bookId}")
     public boolean checkIfBookExist(@PathVariable("bookId") int bookId) {
-        return libraryApplication.checkIfBookIdExist(bookId);
+        return library.checkIfBookIdExist(bookId);
     }
 
     @GetMapping("db/books/count")
     public long countBook() {
-        return libraryApplication.countBooks();
+        return library.countBooks();
     }
 
     @GetMapping("db/books/{bookId}")
     public Book book(@PathVariable("bookId") int bookId) {
-        return libraryApplication.getBook(bookId);
+        return library.getBook(bookId);
     }
 
     @PostMapping("db/books/")
     public void saveBook(@RequestBody Book book) {
-        libraryApplication.saveBook(book);
+        library.saveBook(book);
     }
 
     @DeleteMapping("books/{bookId}")
     public void deleteBook(@PathVariable("bookId") int bookId) {
-        libraryApplication.deleteBook(bookId);
+        library.deleteBook(bookId);
     }
 
     @DeleteMapping("books")
-    public void deleteAllBooks(){
-        libraryApplication.deleteAllBooks();
+    public void deleteAllBooks() {
+        library.deleteAllBooks();
     }
 }
 

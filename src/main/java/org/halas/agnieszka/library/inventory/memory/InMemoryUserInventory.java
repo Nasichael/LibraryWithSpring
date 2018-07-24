@@ -3,14 +3,15 @@ package org.halas.agnieszka.library.inventory.memory;
 import org.halas.agnieszka.library.data.User;
 
 import org.halas.agnieszka.library.inventory.UserInventory;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
-@Repository
+@Component
+@Profile("inMemory")
 public class InMemoryUserInventory implements UserInventory {
 
     Map<Integer, User> users = new HashMap<>();
@@ -26,12 +27,14 @@ public class InMemoryUserInventory implements UserInventory {
         users.put(8, new User(8, "Martyna", "Tomaszewska"));
     }
 
-    public Collection<User> getAll() {
-        return users.values();
+    public List<User> findAll() {
+        return (List<User>) users.values();
     }
 
     public Optional<User> getById(int userId) {
         return Optional.ofNullable(users.get(userId));
     }
+
+
 
 }

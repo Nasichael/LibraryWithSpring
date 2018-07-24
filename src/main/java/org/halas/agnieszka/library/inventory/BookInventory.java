@@ -8,10 +8,19 @@ import java.util.Optional;
 
 public interface BookInventory {
 
-    Collection<Book> getAll();
+    List<Book> findAll();
 
     Optional<Book> getById(int bookId);
 
+    Book save(Book book);
 
-    List<Book> findAll();
+    void deleteAll();
+
+    void deleteById(int bookId);
+
+    boolean existsById(int bookId);
+
+    Optional<Book> findById(int bookId);
+
+    long count();
 }

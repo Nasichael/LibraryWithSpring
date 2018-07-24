@@ -4,12 +4,6 @@ import org.halas.agnieszka.library.data.*;
 import org.halas.agnieszka.library.inventory.BookInventory;
 import org.halas.agnieszka.library.inventory.BookingInventory;
 import org.halas.agnieszka.library.inventory.UserInventory;
-import org.halas.agnieszka.library.inventory.db.BookRepository;
-import org.halas.agnieszka.library.inventory.db.BookingRepository;
-import org.halas.agnieszka.library.inventory.db.UserRepository;
-import org.halas.agnieszka.library.inventory.memory.InMemoryBookInventory;
-import org.halas.agnieszka.library.inventory.memory.InMemoryBookingInventory;
-import org.halas.agnieszka.library.inventory.memory.InMemoryUserInventory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -27,18 +21,12 @@ public class Library {
     BookInventory bookInventory;
     BookingInventory bookingInventory;
     UserInventory userInventory;
-    BookRepository bookRepository;
-    BookingRepository bookingRepository;
-    UserRepository userRepository;
-    InMemoryBookingInventory inMemoryBookingInventory;
-    InMemoryUserInventory inMemoryUserInventory;
-    InMemoryBookInventory inMemoryBookInventory;
 
-    public Library(InMemoryBookInventory inMemoryBookInventory, BookingInventory bookingInventory1, InMemoryUserInventory inMemoryUserInventory) {
-        this.inMemoryBookInventory = inMemoryBookInventory;
-        this.bookingInventory = bookingInventory1;
+
+    public Library(BookInventory bookInventory, BookingInventory bookingInventory, UserInventory userInventory) {
+        this.bookInventory = bookInventory;
+        this.bookingInventory = bookingInventory;
         this.userInventory = userInventory;
-        this.inMemoryUserInventory = inMemoryUserInventory;
     }
 
     public List<Book> search(Predicate<Book>... predicates) {
@@ -47,7 +35,7 @@ public class Library {
                 .reduce(Predicate::and)
                 .orElse(t -> true);
 
-        List<Book> filteredBooks = bookInventory.getAll()
+        List<Book> filteredBooks = bookInventory.findAll()
                 .stream()
                 .filter(bookPredicate)
                 .collect(Collectors.toList());
@@ -61,7 +49,7 @@ public class Library {
 
         List<SearchBookView> filteredView =
                 filteredBooks.stream().map(book -> {
-                    Optional<Booking> booking = bookingInventory.findBookingForBook(book);
+                    Optional<Booking> booking = bookingInventory.findForBook(book).stream().findAny();
 
                     if (booking.isPresent()) {
                         return new SearchBookView(book.getId(), book.getAuthor(), book.getCategoryBook(),
@@ -105,7 +93,7 @@ public class Library {
     }
 
     public void returnBook(Booking booking) {
-        bookingInventory.removeBook(booking);
+        bookingInventory.delete(booking);
     }
 
     public boolean checkBookLimit(int userId) {
@@ -118,38 +106,41 @@ public class Library {
     }
 
     public boolean checkIfBookRented(Book book) {
-        Optional<Booking> booking = bookingInventory.findBookingForBook(book);
+        Optional<Booking> booking = bookingInventory.findForBook(book).stream().findAny();
+        ;
         return booking.isPresent();
     }
 
 
     public boolean checkIfBookIdExist(int bookId) {
-        final boolean check = bookRepository.existsById(bookId);
+        final boolean check = bookInventory.existsById(bookId);
         return check;
     }
 
     public void saveBook(Book book) {
-        bookRepository.save(book);
+        bookInventory.save(book);
     }
 
     public void deleteAllBooks() {
+        bookInventory.deleteAll();
     }
 
     public void deleteBook(int bookId) {
+        bookInventory.deleteById(bookId);
     }
 
     public List<Book> findAll() {
-        final List<Book> all = bookRepository.findAll();
+        final List<Book> all = bookInventory.findAll();
         return all;
     }
 
     public Book getBook(int bookId) {
-        final Book book = bookRepository.findById(bookId).get();
+        final Book book = bookInventory.findById(bookId).get();
         return book;
     }
 
     public long countBooks() {
-        final long count = bookRepository.count();
+        final long count = bookInventory.count();
         return count;
     }
 }

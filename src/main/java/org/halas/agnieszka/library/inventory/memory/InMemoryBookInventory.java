@@ -3,11 +3,15 @@ package org.halas.agnieszka.library.inventory.memory;
 import org.halas.agnieszka.library.data.Book;
 import org.halas.agnieszka.library.data.CategoryBook;
 import org.halas.agnieszka.library.inventory.BookInventory;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
+@Component
+@Profile("inMemory")
 public class InMemoryBookInventory implements BookInventory {
 
     Map<Integer, Book> books = new HashMap<>();
@@ -30,8 +34,8 @@ public class InMemoryBookInventory implements BookInventory {
         books.put(15, new Book("Jules Verne", (short) 1864, CategoryBook.SCIENCEFICTION, "Journey to the Center of the Earth", 15));
     }
 
-    public Collection<Book> getAll() {
-        return books.values();
+    public List<Book> findAll() {
+        return (List<Book>) books.values();
     }
 
     public Optional<Book> getById(int bookId) {
@@ -39,8 +43,34 @@ public class InMemoryBookInventory implements BookInventory {
     }
 
     @Override
-    public List<Book> findAll() {
+    public Book save(Book book) {
         return null;
     }
+
+    @Override
+    public void deleteAll() {
+
+    }
+
+    @Override
+    public void deleteById(int bookId) {
+
+    }
+
+    @Override
+    public boolean existsById(int bookId) {
+        return false;
+    }
+
+    @Override
+    public Optional<Book> findById(int bookId) {
+        return null;
+    }
+
+    @Override
+    public long count() {
+        return 0;
+    }
+
 
 }

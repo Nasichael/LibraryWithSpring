@@ -11,7 +11,7 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = SEQUENCE)
-    //@Column(name="BOOK_ID")
+
     private int id;
     private String author;
     private short year;

@@ -7,10 +7,6 @@ import org.halas.agnieszka.library.data.User;
 import org.halas.agnieszka.library.engine.Filters;
 import org.halas.agnieszka.library.engine.Library;
 import org.halas.agnieszka.library.inventory.*;
-import org.halas.agnieszka.library.inventory.db.BookRepository;
-import org.halas.agnieszka.library.inventory.db.BookingRepository;
-import org.halas.agnieszka.library.inventory.db.UserRepository;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -54,13 +50,17 @@ public class LibraryController {
 
     @GetMapping("books")
     public Collection<Book> getBooks() {
-        return bookInventory.getAll();
+        return bookInventory.findAll();
     }
 
     @GetMapping("users")
     public Collection<User> getUsers() {
-        return userInventory.getAll();
+        return userInventory.findAll();
     }
+
+    //@RequestMapping
+
+
 
     ///////////////////////////////////////////////////////////
 

@@ -2,6 +2,7 @@ package org.halas.agnieszka.library.inventory;
 
 import org.halas.agnieszka.library.data.Book;
 import org.halas.agnieszka.library.data.Booking;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -14,7 +15,7 @@ public interface BookingInventory {
 
     void addBooking(Booking booking);
 
-    void removeBook(Booking booking);
+    void delete(Booking booking);
 
     LocalDate calculateReturnDate(LocalDate returnDate);
 
@@ -22,5 +23,5 @@ public interface BookingInventory {
 
     Collection<Booking> findBookingForUser(int userId);
 
-    Optional<Booking> findBookingForBook(Book book);
+    Collection<Booking> findForBook(Book bookId);
 }

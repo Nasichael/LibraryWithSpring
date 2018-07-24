@@ -4,6 +4,9 @@ import org.halas.agnieszka.library.data.Book;
 import org.halas.agnieszka.library.data.Booking;
 import org.halas.agnieszka.library.data.CategoryBook;
 import org.halas.agnieszka.library.inventory.BookingInventory;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -11,7 +14,10 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@Repository
+import static java.util.stream.Collectors.toList;
+
+@Component
+@Profile("inMemory")
 public class InMemoryBookingInventory implements BookingInventory {
 
     private List<Booking> bookings = new ArrayList<>();
@@ -24,7 +30,7 @@ public class InMemoryBookingInventory implements BookingInventory {
         bookings.add(booking);
     }
 
-    public void removeBook(Booking booking) {
+    public void delete(Booking booking) {
         bookings.remove(booking);
     }
 
@@ -41,15 +47,15 @@ public class InMemoryBookingInventory implements BookingInventory {
     public Collection<Booking> findBookingForUser(int userId) {
 
         Predicate<Booking> predicate = b -> b.getUser().getId() == userId;
-        Collection<Booking> userCollection = bookings.stream().filter(predicate).collect(Collectors.toList());
+        Collection<Booking> userCollection = bookings.stream().filter(predicate).collect(toList());
         return userCollection;
     }
 
-    public Optional<Booking> findBookingForBook(Book book) {
+    public Collection<Booking> findForBook(Book bookById) {
 
-        Predicate<Booking> predicate = b -> b.getBook().equals(book);
-        Optional<Booking> optional = bookings.stream().filter(predicate).findAny();
-        return optional;
+        Predicate<Booking> predicate = b -> b.getBook().equals(bookById);
+       return bookings.stream().filter(predicate).collect(toList());
+
     }
 
 }

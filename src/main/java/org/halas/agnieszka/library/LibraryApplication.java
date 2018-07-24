@@ -3,6 +3,7 @@ package org.halas.agnieszka.library;
 import org.halas.agnieszka.library.data.Book;
 import org.halas.agnieszka.library.data.CategoryBook;
 import org.halas.agnieszka.library.data.User;
+import org.halas.agnieszka.library.inventory.BookInventory;
 import org.halas.agnieszka.library.inventory.UserInventory;
 import org.halas.agnieszka.library.inventory.db.BookRepository;
 import org.halas.agnieszka.library.inventory.db.UserRepository;
@@ -20,15 +21,16 @@ public class LibraryApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(LibraryApplication.class, args);
+
     }
 
-    @Bean
-    ApplicationRunner run(BookRepository bookRepository, UserRepository userRepository) {
+    @Bean()
+    ApplicationRunner run(BookInventory bookInventory, UserInventory userInventory) {
         return args -> {
-            bookRepository.save(new Book("a", (short) 333, CategoryBook.SCIENCEFICTION, "aaa", 46));
-            userRepository.save(new User("Bob", "test"));
-            userRepository.save(new User("Ted", "test"));
-            bookRepository.save(new Book("bbba", (short) 333, CategoryBook.SCIENCEFICTION, "aaa", 8));
+            bookInventory.save(new Book("a", (short) 333, CategoryBook.SCIENCEFICTION, "aaa", 46));
+            userInventory.save(new User("Bob", "test"));
+            userInventory.save(new User("Ted", "test"));
+            bookInventory.save(new Book("bbba", (short) 333, CategoryBook.SCIENCEFICTION, "aaa", 8));
         };
     }
 
